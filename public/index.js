@@ -20,7 +20,7 @@
 
 	socket.on("init",function(uid){
 		receiverID = uid;
-		document.querySelector(".join-screen").classList.remove("active");
+		// document.querySelector(".join-screen").classList.remove("active");
 		document.querySelector(".fs-screen").classList.add("active");
 	});
 
