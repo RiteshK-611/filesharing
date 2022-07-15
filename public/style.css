@@ -37,7 +37,7 @@ body {
     padding: 50px;
 }
 
-.join-screen .form .form-inout {
+.join-screen .form .form-input {
     margin: 10px 0;
 }
 
@@ -51,12 +51,19 @@ body {
 .join-screen .form button {
     background-color: #111;
     padding: 10px 20px;
-    font-size: 10px;
+    font-size: 16px;
+    font-weight: 600;
     border-radius: 20px;
     color: #fff;
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.join-screen .form #join-id b {
+	color: #222;
+	display: block;
+	margin-top: 20px;
 }
 
 .join-screen .form #join-id span {
@@ -69,20 +76,23 @@ body {
     margin-top: 5px;
 }
 
-.join-screen .form label {
+.join-screen .form .form-input label {
     color: #222;
-    font-size: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.join-screen .form input {
+.join-screen .form .form-input input {
     display: block;
     margin: 10px 0;
     width: 100%;
     max-width: 200px;
     border: 1px solid #111;
     color: #111;
-    font-size: 20px;
-    padding: 20px;
+    font-size: 25px;
+    font-family: monospace;
+    padding: 10px;
+    text-align: center;
 }
 
 .fs-screen {
@@ -100,7 +110,7 @@ body {
     padding: 40px 50px;
     text-align: center;
     color: #111;
-    font-size: 10px;
+    font-size: 18px;
 }
 
 .fs-screen .file-input input {
