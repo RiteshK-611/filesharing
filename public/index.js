@@ -60,7 +60,7 @@
 		socket.on("fs-share",function(){
 			let chunk = buffer.slice(0,metadata.buffer_size);
 			buffer = buffer.slice(metadata.buffer_size,buffer.length);
-			progress_node.innerText = Math.trunc(((metadata.total_buffer_size - buffer.length) / metadata.total_buffer_size * 100));
+			progress_node.innerText = Math.trunc((metadata.total_buffer_size - buffer.length) / metadata.total_buffer_size * 100) + "%";
 			if(chunk.length != 0){
 				socket.emit("file-raw", {
 					uid:receiverID,
