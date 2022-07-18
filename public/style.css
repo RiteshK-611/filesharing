@@ -137,7 +137,7 @@ button {
 .fs-screen .files-list {
     margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -150,7 +150,7 @@ button {
 }
 
 .fs-screen .files-list .item {
-    width: 33.33%;
+    width: 30%;
     min-width: 200px;
     border: 1px solid #eee;
     border-radius: 10px;
