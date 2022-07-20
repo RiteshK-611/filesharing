@@ -28,6 +28,7 @@
   let fileShare = {};
 
   socket.on("fs-meta", function (metadata) {
+    // console.log("Metadata: " + metadata + " Name: " + metadata.filename + " Time: " + Math.floor(Date.now() / 1000));
     fileShare.metadata = metadata;
     fileShare.transmitted = 0;
     fileShare.buffer = [];

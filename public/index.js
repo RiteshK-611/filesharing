@@ -13,11 +13,12 @@
     .addEventListener("click", function () {
       let joinID = generateID();
       document.querySelector("#join-id").innerHTML = `
-			<b>Room ID</b>
-			<div class="copy-join-id">
-				<span id="text" onclick="copyElementText(this.id)">${joinID}</span>
-			</div>
-		`;
+		<b>Room ID</b>
+		<div class="copy-join-id">
+			<span id="text">${joinID}</span>
+			<button onclick="copyElementText()"><i class="fa fa-clone"></i></button>
+		</div>
+	  `;
       socket.emit("sender-join", {
         uid: joinID,
       });
@@ -33,35 +34,8 @@
     .querySelector("#file-input")
     .addEventListener("change", function (e) {
       for (let i = 0; i < e.target.files.length; i++) {
-        let file = e.target.files[i];
-        let reader = new FileReader();
-
-        if (!file) {
-          return;
-        }
-
-        reader.onload = function (e) {
-          let buffer = new Uint8Array(reader.result);
-
-          let el = document.createElement("div");
-          el.classList.add("item");
-          el.innerHTML = `
-						<div class="progress">0%</div>
-						<div class="filename">${file.name}</div>
-				`;
-
-          document.querySelector(".files-list").appendChild(el);
-          shareFile(
-            {
-              filename: file.name,
-              total_buffer_size: buffer.length,
-              buffer_size: 1024,
-            },
-            buffer,
-            el.querySelector(".progress")
-          );
-        };
-        reader.readAsArrayBuffer(file);
+        sendFile(e.target.files[i]);
+				console.log("Start: ", Math.floor(Date.now() / 1000))
       }
     });
 
@@ -71,75 +45,28 @@
 
     if (ev.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
+			console.log("file1")
       for (let i = 0; i < ev.dataTransfer.items.length; i++) {
         // If dropped items aren't files, reject them
         if (ev.dataTransfer.items[i].kind === "file") {
           const file = ev.dataTransfer.items[i].getAsFile();
-          console.log("… file1[" + i + "].name = " + file.name);
-          console.log(file);
-          if (!file) {
-            return;
-          }
-          let reader = new FileReader();
-          reader.onload = function (e) {
-            let buffer = new Uint8Array(reader.result);
 
-            let el = document.createElement("div");
-            el.classList.add("item");
-            el.innerHTML = `
-								<div class="progress">0%</div>
-								<div class="filename">${file.name}</div>
-						`;
-
-            document.querySelector(".files-list").appendChild(el);
-            shareFile(
-              {
-                filename: file.name,
-                total_buffer_size: buffer.length,
-                buffer_size: 1024,
-              },
-              buffer,
-              el.querySelector(".progress")
-            );
-          };
-          reader.readAsArrayBuffer(file);
+					console.log("… file1[" + i + "].name = " + ev.dataTransfer.items[i].name);
+					console.log("… file1[" + i + "].name = " + file.name);
+					console.log("File1: ", file);
+					sendFile(file);
         }
       }
     } else {
       // Use DataTransfer interface to access the file(s)
+			console.log("file2")
       for (let i = 0; i < ev.dataTransfer.files.length; i++) {
-        console.log(
-          "… file2[" + i + "].name = " + ev.dataTransfer.files[i].name
-        );
         const file = ev.dataTransfer.files[i].getAsFile();
+
+        console.log("… file2[" + i + "].name = " + ev.dataTransfer.files[i].name);
         console.log("… file2[" + i + "].name = " + file.name);
-        console.log(file);
-        if (!file) {
-          return;
-        }
-        let reader = new FileReader();
-        reader.onload = function (e) {
-          let buffer = new Uint8Array(reader.result);
-
-          let el = document.createElement("div");
-          el.classList.add("item");
-          el.innerHTML = `
-							<div class="progress">0%</div>
-							<div class="filename">${file.name}</div>
-					`;
-
-          document.querySelector(".files-list").appendChild(el);
-          shareFile(
-            {
-              filename: file.name,
-              total_buffer_size: buffer.length,
-              buffer_size: 1024,
-            },
-            buffer,
-            el.querySelector(".progress")
-          );
-        };
-        reader.readAsArrayBuffer(file);
+        console.log("File2: ", file);
+        sendFile(file);
       }
     }
   });
@@ -176,20 +103,44 @@
       }
     });
   }
+
+  function sendFile(file) {
+	// let file = e.target.files[i];
+	let reader = new FileReader();
+
+	if (!file) {
+		return;
+	}
+
+	console.log("Sending file: ", Math.floor(Date.now() / 1000))
+
+	reader.onload = function (e) {
+		let buffer = new Uint8Array(reader.result);
+
+		let el = document.createElement("div");
+		el.classList.add("item");
+		el.innerHTML = `
+		<div class="progress">0%</div>
+		<div class="filename">${file.name}</div>
+		`;
+
+		document.querySelector(".files-list").appendChild(el);
+		shareFile(
+		{
+			filename: file.name,
+			total_buffer_size: buffer.length,
+			buffer_size: 1024,
+		},
+		buffer,
+		el.querySelector(".progress")
+		);
+	};
+	reader.readAsArrayBuffer(file);
+  }
 })();
 
-// function copyElementText(id) {
-// 	var text = document.getElementById(id).innerText;
-// 	var elem = document.createElement("textarea");
-// 	document.body.appendChild(elem);
-// 	elem.value = text;
-// 	elem.select();
-// 	document.execCommand("copy");
-// 	document.body.removeChild(elem);
-// }
-
-function copyElementText(id) {
-  var text = document.getElementById(id).innerText;
+function copyElementText() {
+  var text = document.getElementById("text").innerText;
   var elem = document.createElement("textarea");
   document.body.appendChild(elem);
   elem.value = text;
