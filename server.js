@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const path = require("path");
 
 const app = express();
@@ -6,7 +7,10 @@ const server = require("http").createServer(app);
 
 const io = require("socket.io")(server);
 
-app.use(express.static(path.join(__dirname + "/public")));
+
+app.use('/receiver.html', (req, res) => {res.sendFile(path.join(__dirname + "/public/receiver.html"))});
+app.use(express.static(__dirname + "/public"))
+// app.use('/', (req, res) => {res.sendFile(path.join(__dirname + "/public/index.html"))});
 
 io.on("connection", function (socket) {
   socket.on("sender-join", function (data) {
